@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الأرباح - B5</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- التحقق من تسجيل الدخول -->
+  <script>
+    // إذا المستخدم لم يسجل الدخول، يعيد توجيهه إلى auth.html
+    if (!sessionStorage.getItem("auth")) {
+      const currentPage = window.location.pathname.split('/').pop();
+      window.location.href = `auth.html?to=${currentPage}`;
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>📈 تقرير الأرباح</h1>
+  </header>
+
+  <main>
+    <!-- ملخص الأرباح -->
+    <section>
+      <h2>ملخص الأرباح</h2>
+      <p>إجمالي المبيعات: <span id="total-sales">---</span> جنيه</p>
+      <p>إجمالي المشتريات: <span id="total-purchases">---</span> جنيه</p>
+      <p>صافي الأرباح: <span id="total-profit">---</span> جنيه</p>
+    </section>
+
+    <!-- تفاصيل الأرباح اليومية -->
+    <section>
+      <h2>تفاصيل الأرباح اليومية</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>المبيعات</th>
+            <th>المشتريات</th>
+            <th>الربح</th>
+          </tr>
+        </thead>
+        <tbody id="profitsTableBody">
+          <!-- البيانات ستُحمل ديناميك من قاعدة البيانات -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    // تحميل الأرباح (تفاصيل + ملخص)
+    async function loadAllProfits() {
+      try {
+        // 1️⃣ تحميل تفاصيل الأرباح اليومية
+        const res = await fetch('/api/profits');
+        const data = await res.json();
+  
+        const tbody = document.getElementById('profitsTableBody');
+        tbody.innerHTML = '';
+  
+        data.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${item.date}</td>
+            <td>${item.sales}</td>
+            <td>${item.purchases}</td>
+            <td>${item.profit}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+  
+        // 2️⃣ تحميل ملخص الأرباح الكلي
+        const res2 = await fetch('/api/profits/summary');
+        const summary = await res2.json();
+  
+        document.getElementById("total-sales").textContent = parseFloat(summary.total_sales || 0).toFixed(2);
+        document.getElementById("total-purchases").textContent = parseFloat(summary.total_purchases || 0).toFixed(2);
+        document.getElementById("total-profit").textContent = parseFloat(summary.total_profit || 0).toFixed(2);
+  
+      } catch (err) {
+        console.error('خطأ في تحميل البيانات:', err);
+      }
+    }
+  
+    // تشغيلها عند فتح الصفحة
+    window.addEventListener('DOMContentLoaded', loadAllProfits);
+  </script>
+  
+</body>
+</html>

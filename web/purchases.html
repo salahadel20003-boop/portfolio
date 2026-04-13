@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المشتريات - B5</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>📦 إدارة المشتريات</h1>
+  </header>
+
+  <main>
+    <form id="purchase-form">
+      <label>اسم المنتج:</label>
+      <input type="text" name="item_name" placeholder="اسم المنتج" required>
+
+      <label>الكمية:</label>
+      <input type="number" name="quantity" placeholder="0" min="1" required>
+
+      <label>السعر:</label>
+      <input type="number" name="cost" placeholder="0" min="0.01" step="0.01" required>
+
+      <button type="submit">إضافة مشتريات</button>
+    </form>
+
+    <section>
+      <h2>قائمة المشتريات</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>المنتج</th>
+            <th>الكمية</th>
+            <th>السعر</th>
+            <th>الإجمالي</th>
+          </tr>
+        </thead>
+        <tbody id="purchases-table">
+          <tr>
+            <td colspan="4" style="text-align:center">لا توجد مشتريات بعد</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("purchase-form");
+      const tableBody = document.getElementById("purchases-table");
+
+      // تحميل المشتريات من السيرفر
+      async function loadPurchases() {
+        try {
+          const res = await fetch("/api/purchases");
+          const data = await res.json();
+
+          if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center">لا توجد مشتريات بعد</td></tr>';
+            return;
+          }
+
+          tableBody.innerHTML = "";
+          data.forEach(p => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+  <td>${p.item_name}</td>
+  <td>${p.quantity}</td>
+  <td>${Number(p.cost).toFixed(2)}</td>
+`;
+
+  tableBody.appendChild(row);
+
+          });
+        } catch (err) {
+          console.error("Error loading purchases:", err);
+        }
+      }
+
+      loadPurchases();
+
+      // إضافة مشتريات جديدة
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const item_name = form.item_name.value.trim();
+        const quantity = parseInt(form.quantity.value) || 0;
+        const cost = parseFloat(form.cost.value) || 0;
+
+        if (!item_name || quantity <= 0 || cost <= 0) {
+          return alert("⚠️ جميع الحقول مطلوبة بشكل صحيح");
+        }
+
+        try {
+          const res = await fetch("/api/purchases", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ item_name, quantity, cost })
+          });
+
+          if (res.ok) {
+            alert("✅ تم إضافة المشتريات بنجاح");
+            form.reset();
+            loadPurchases();
+          } else {
+            const text = await res.text();
+            alert("❌ خطأ في السيرفر: " + text);
+          }
+        } catch (err) {
+          console.error(err);
+          alert("❌ حدث خطأ أثناء الإضافة");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+body {
+  font-family: "Tajawal", sans-serif;
+  margin: 0;
+  background: #f7f7f9;
+  direction: rtl;
+  color: #222;
+}
+
+/* ====== الهيدر ====== */
+header {
+  background: #d62828;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ====== تنسيق رئيسي للصفحات ====== */
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ====== الأزرار الجانبية ====== */
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 180px;
+}
+
+.categories a {
+  text-decoration: none;
+}
+
+.categories button {
+    height: 55px;
+    width: 100%;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.categories button:hover {
+  background: #d62828;
+  transform: scale(1.05);
+}
+
+/* ====== قسم المنتجات ====== */
+.products {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.product {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 600;
+}
+
+.product:hover {
+  background: #d62828;
+  color: white;
+  transform: scale(1.03);
+}
+
+/* ====== قسم الفاتورة ====== */
+.bill {
+  flex: 1;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
+
+.bill h2 {
+  text-align: center;
+  color: #d62828;
+  margin-bottom: 10px;
+}
+
+.datetime {
+  text-align: center;
+  background: #f1f1f1;
+  padding: 6px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #333;
+}
+#notes {
+  width: 100%;
+  min-height: 60px;
+  max-height: 100px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: "Tajawal", sans-serif;
+  font-size: 14px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+/* ====== عناصر الفاتورة ====== */
+.bill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 4px;
+}
+
+.bill-item input {
+  width: 45px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.remove {
+  background: #ff3b3b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 3px 6px;
+}
+
+/* ====== الدفع والطباعة ====== */
+
+.payment {
+  margin-top: 10px;
+}
+
+.payment input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #d62828;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+#pay,
+#print {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#pay {
+  background: #28a745;
+  color: white;
+}
+
+#print {
+  background: #007bff;
+  color: white;
+}
+
+#pay:hover {
+  background: #218838;
+}
+
+#print:hover {
+  background: #0069d9;
+}
+
+/* ====== نمط عام للنماذج ====== */
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form label {
+  font-weight: bold;
+  color: #333;
+}
+
+form input,
+form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+form button {
+  background: #d62828;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background: #b71c1c;
+}
+
+/* ====== الجداول (للمبيعات والمشتريات والأرباح) ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background: #d62828;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* ====== الطباعة ====== */
+.print-area {
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-line;
+  font-weight: 600;
+}
+
+.print-area .bill-header,
+.print-area .bill-footer {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.print-area .bill-items {
+  border-top: 1px dashed #000;
+  border-bottom: 1px dashed #000;
+  margin: 5px 0;
+  padding: 5px 0;
+}
+
+.print-area .bill-items .item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.print-area .totals {
+  margin-top: 5px;
+  border-top: 1px solid #000;
+  padding-top: 5px;
+}
+
+.print-area .totals div {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+/* ====== أزرار الإدارة (تعديل، حذف، بيان، خروج) ====== */
+.actions {
+  display: flex;
+  flex-direction: column; /* أو row لو تحب أفقي */
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.actions button {
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  color: white;
+}
+
+#editBtn { background: #2196F3; }
+#editBtn:hover { background: #0b7dda; transform: scale(1.03); }
+
+#deleteBtn { background: #f44336; }
+#deleteBtn:hover { background: #b71c1c; transform: scale(1.03); }
+
+#newReportBtn { background: #FF9800; }
+#newReportBtn:hover { background: #e68a00; transform: scale(1.03); }
+
+#logoutBtn { background: #9C27B0; }
+#logoutBtn:hover { background: #7b1fa2; transform: scale(1.03); }
+
+/* خيار أفقي */
+.actions.horizontal { flex-direction: row; justify-content: space-between; }
+.actions.horizontal button { flex: 1; }
+#editSelect {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-family: "Tajawal", sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+#editSelect:focus {
+  border-color: #d62828;
+  outline: none;
+  box-shadow: 0 0 4px rgba(214, 40, 40, 0.4);
+}
