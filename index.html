@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' http://localhost:5000;">
+  <title>Salah Adel | Portfolio</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h2 class="logo">Salah Adel</h2>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Full Stack Developer</h1>
+  <p>I build modern web applications</p>
+  <button class="btn">View My Work</button>
+</section>
+
+<section id="about" class="fade-in">
+  <h2>About Me</h2>
+  <p>
+    Hi! I'm Salah Adel, a full-stack web developer. I work with HTML, CSS, JavaScript, Node.js, PHP, Sql, and databases. I'm always striving to improve my skills in programming. Check out my projects on  linkedin and github </p>
+</section>
+<section id="projects" class="fade-in">
+  <h2>Projects</h2>
+
+  <div class="projects-container">
+
+    <div class="project-card">
+      <img src="images/cashier-preview.jpg" alt="Cashier System">
+
+      <div class="overlay">
+        <h3>Cashier System</h3>
+        <button id="openSystemBtn">Open Project</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact" class="fade-in">
+  <h2>Contact Me</h2>
+
+  <!-- بياناتك -->
+  <p>📞 01044818514</p>
+
+  <p>
+    💻 GitHub:
+    <a href="https://github.com/salahadel20003-boop" target="_blank">
+      github.com/salahadel20003-boop
+  </p>
+
+  <p>
+    🔗 LinkedIn:
+    <a href="https://www.linkedin.com/in/salah-adel" target="_blank">
+      linkedin.com/in/salah-adel
+    </a>
+  </p>
+
+ 
+  <form id="contact-form">
+    <div id="successBox" class="success-box"></div>
+<div id="errorBox" class="error-box"></div>
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send</button>
+    
+  </form>
+</section>
+<footer>
+  <p>© 2026 Salah Adel</p>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
