@@ -144,7 +144,9 @@ form.addEventListener("submit", function(e) {
 });
 
 document.getElementById("openSystemBtn").addEventListener("click", function () {
-  window.open("projects/cashier-system/web/index.html", "_blank");
+  window.open("https://salahadel20003-boop.github.io/restaurant-system/", "_blank");
 });
+
+
 
 
