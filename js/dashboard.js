@@ -1,44 +1,95 @@
+const API_BASE = "https://portfolio-backend-production-770e.up.railway.app";
+
 const token = localStorage.getItem("token");
 
+let allMessages = [];
+
 if (!token) {
-  window.location.href = "/login.html";
+  window.location.href = "login.html";
 }
 
-fetch("/api/contact", {
+fetch(`${API_BASE}/api/contact`, {
   headers: {
-    Authorization: token
+    Authorization: `Bearer ${token}`
   }
 })
-.then(res => {
-  if (res.status === 401 || res.status === 403) {
-    window.location.href = "/login.html";
-  }
-  return res.json();
-})
-.then(data => {
+  .then(res => {
+    if (res.status === 401 || res.status === 403) {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (!res.ok) {
+      throw new Error("Failed to load messages");
+    }
+
+    return res.json();
+  })
+  .then(data => {
+    if (!data) return;
+
     allMessages = data;
-  const container = document.getElementById("messages");
 
-  container.innerHTML = "";
+    const container = document.getElementById("messages");
 
-  data.forEach((msg, index) => {
-    container.innerHTML += `
-      <div class="card" onclick="openModal(${index})">
-        <h3>${msg.name || "Unknown User"}</h3>
-        <p>${msg.message || "No message"}</p>
-  
-        <div class="meta">
-          <span>${msg.email || "No email"}</span>
-          <span>${msg.date ? new Date(msg.date).toLocaleDateString() : ""}</span>
-        </div>
-      </div>
-    `;
+    container.innerHTML = "";
+
+    if (!Array.isArray(data) || data.length === 0) {
+      const emptyMessage = document.createElement("p");
+      emptyMessage.textContent = "No messages yet.";
+      container.appendChild(emptyMessage);
+      return;
+    }
+
+    data.forEach((msg, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.addEventListener("click", () => openModal(index));
+
+      const name = document.createElement("h3");
+      name.textContent = msg.name || "Unknown User";
+
+      const message = document.createElement("p");
+      message.textContent = msg.message || "No message";
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const email = document.createElement("span");
+      email.textContent = msg.email || "No email";
+
+      const date = document.createElement("span");
+      date.textContent = msg.date ? new Date(msg.date).toLocaleDateString() : "";
+
+      meta.appendChild(email);
+      meta.appendChild(date);
+
+      card.appendChild(name);
+      card.appendChild(message);
+      card.appendChild(meta);
+
+      container.appendChild(card);
+    });
+  })
+  .catch(err => {
+    console.error(err);
+
+    const container = document.getElementById("messages");
+
+    if (container) {
+      container.innerHTML = "";
+
+      const errorMessage = document.createElement("p");
+      errorMessage.textContent = "Error loading messages.";
+      container.appendChild(errorMessage);
+    }
   });
-});
-let allMessages = [];
 
 function openModal(index) {
   const msg = allMessages[index];
+
+  if (!msg) return;
 
   document.getElementById("modalName").innerText = msg.name || "Unknown";
   document.getElementById("modalMessage").innerText = msg.message || "";
@@ -50,9 +101,13 @@ function openModal(index) {
   document.getElementById("modal").style.display = "flex";
 }
 
-document.getElementById("closeModal").onclick = function () {
-  document.getElementById("modal").style.display = "none";
-};
+const closeModal = document.getElementById("closeModal");
+
+if (closeModal) {
+  closeModal.onclick = function () {
+    document.getElementById("modal").style.display = "none";
+  };
+}
 
 window.onclick = function (e) {
   if (e.target.id === "modal") {
