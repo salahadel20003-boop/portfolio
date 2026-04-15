@@ -1,23 +1,26 @@
+const API_BASE = "https://portfolio-backend-production-770e.up.railway.app";
 
 // Smooth scroll للزرار
-document.querySelector('.btn').addEventListener('click', () => {
-  document.getElementById('projects').scrollIntoView({
-    behavior: 'smooth'
-  });
-});
+const workButton = document.querySelector(".btn");
 
+if (workButton) {
+  workButton.addEventListener("click", () => {
+    document.getElementById("projects").scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+}
 
 // Navbar background on scroll
-window.addEventListener('scroll', () => {
-  const header = document.querySelector('header');
+window.addEventListener("scroll", () => {
+  const header = document.querySelector("header");
 
   if (window.scrollY > 50) {
-    header.style.background = 'rgba(2, 6, 23, 0.9)';
+    header.style.background = "rgba(2, 6, 23, 0.9)";
   } else {
-    header.style.background = 'rgba(15, 23, 42, 0.6)';
+    header.style.background = "rgba(15, 23, 42, 0.6)";
   }
 });
-
 
 // Active nav link + scroll spy
 const links = document.querySelectorAll("nav a");
@@ -28,6 +31,7 @@ window.addEventListener("scroll", () => {
 
   sections.forEach(sec => {
     const top = sec.offsetTop;
+
     if (window.scrollY >= top - 120) {
       current = sec.id;
     }
@@ -35,12 +39,12 @@ window.addEventListener("scroll", () => {
 
   links.forEach(link => {
     link.classList.remove("active");
+
     if (link.getAttribute("href") === "#" + current) {
       link.classList.add("active");
     }
   });
 });
-
 
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
@@ -57,96 +61,120 @@ document.querySelectorAll(".fade-in").forEach(el => {
   observer.observe(el);
 });
 
-
 // Dynamic Projects
-const container = document.getElementById('projects-container');
+const container = document.getElementById("projects-container");
 
-fetch('http://localhost:5000/api/projects')
-.then(res => res.json())
-.then(projects => {
-  projects.forEach(project => {
-    container.insertAdjacentHTML('beforeend', `
-      <div class="card fade-in">
-        <img src="images/${project.img}" alt="${project.title}">
-        <h3>${project.title}</h3>
-        <p>${project.desc}</p>
-        <button onclick="viewProject('${project.title}')">View</button>
-      </div>
-    `);
-  });
-})
-.catch(err => {
-  console.error('Error fetching projects:', err);
-  container.innerHTML = '<p>Failed to load projects</p>';
-});
+if (container) {
+  fetch(`${API_BASE}/api/projects`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Failed to load projects");
+      }
 
+      return res.json();
+    })
+    .then(projects => {
+      projects.forEach(project => {
+        const card = document.createElement("div");
+        card.className = "project-card fade-in";
+
+        const img = document.createElement("img");
+        img.src = `images/${project.img}`;
+        img.alt = project.title || "Project image";
+
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+
+        const title = document.createElement("h3");
+        title.textContent = project.title || "Untitled Project";
+
+        const button = document.createElement("button");
+        button.textContent = "View";
+        button.addEventListener("click", () => {
+          viewProject(project.title || "Project");
+        });
+
+        overlay.appendChild(title);
+        overlay.appendChild(button);
+
+        card.appendChild(img);
+        card.appendChild(overlay);
+
+        container.appendChild(card);
+        observer.observe(card);
+      });
+    })
+    .catch(err => {
+      console.error("Error fetching projects:", err);
+    });
+}
 
 // View project
 function viewProject(title) {
   alert("Opening project: " + title);
 }
 
-
-// Contact form (UI notifications بدل alerts)
+// Contact form
 const form = document.getElementById("contact-form");
-
 const successBox = document.getElementById("successBox");
 const errorBox = document.getElementById("errorBox");
 
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
+if (form) {
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  const data = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    message: document.getElementById("message").value
-  };
+    const data = {
+      name: document.getElementById("name").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      message: document.getElementById("message").value.trim()
+    };
 
-  fetch("http://localhost:5000/api/contact", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(result => {
+    fetch(`${API_BASE}/api/contact`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to send message");
+        }
 
-    // نجاح
-    successBox.style.display = "block";
-    successBox.innerText = "Message sent successfully ✅";
+        return res.json();
+      })
+      .then(result => {
+        successBox.style.display = "block";
+        successBox.innerText = "Message sent successfully ✅";
 
-    errorBox.style.display = "none";
+        errorBox.style.display = "none";
 
-    form.reset();
+        form.reset();
 
-    setTimeout(() => {
-      successBox.style.display = "none";
-    }, 3000);
+        setTimeout(() => {
+          successBox.style.display = "none";
+        }, 3000);
+      })
+      .catch(err => {
+        console.error(err);
 
-  })
-  .catch(err => {
+        errorBox.style.display = "block";
+        errorBox.innerText = "Error sending message ❌";
 
-    console.error(err);
+        successBox.style.display = "none";
 
-    // خطأ
-    errorBox.style.display = "block";
-    errorBox.innerText = "Error sending message ❌";
-
-    successBox.style.display = "none";
-
-    setTimeout(() => {
-      errorBox.style.display = "none";
-    }, 3000);
-
+        setTimeout(() => {
+          errorBox.style.display = "none";
+        }, 3000);
+      });
   });
+}
 
-});
+// Open cashier project
+const openSystemBtn = document.getElementById("openSystemBtn");
 
-document.getElementById("openSystemBtn").addEventListener("click", function () {
-  window.open("https://salahadel20003-boop.github.io/restaurant-system/", "_blank");
-});
-
-
-
-
+if (openSystemBtn) {
+  openSystemBtn.addEventListener("click", function () {
+    window.open("https://salahadel20003-boop.github.io/restaurant-system/", "_blank");
+  });
+}
