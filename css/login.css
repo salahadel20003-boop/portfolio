@@ -108,3 +108,28 @@ body {
     display: none;
     font-size: 14px;
   }
+  .login-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .error-box {
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 480px) {
+    .login-box,
+    .error-box {
+      width: 100%;
+      max-width: 340px;
+    }
+  
+    .login-box {
+      padding: 25px;
+    }
+  
+    h2 {
+      font-size: 22px;
+    }
+  }
