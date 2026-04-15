@@ -261,3 +261,86 @@ footer {
   text-align: center;
   display: none;
 }
+a {
+  color: #38bdf8;
+}
+
+a:hover {
+  color: #17bc1d;
+}
+
+#projects h2 {
+  text-align: center;
+  color: #17bc1d;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+#contact textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+#contact input::placeholder,
+#contact textarea::placeholder {
+  color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  nav a {
+    margin-left: 0;
+  }
+
+  .hero {
+    padding: 100px 20px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  #about,
+  #contact {
+    padding: 30px 20px;
+    margin: 40px 15px;
+  }
+
+  .projects-container {
+    padding: 25px 15px;
+    grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  #about h2,
+  #contact h2,
+  #projects h2 {
+    font-size: 26px;
+  }
+}
